@@ -1,9 +1,5 @@
-
 import streamlit as st
-from ai_manager import AIManager
-
-# Initialize RAG pipeline
-ai = AIManager()
+from ai_service import ai
 
 # Page config
 st.set_page_config(page_title="ACS Assistant", page_icon="🩺", layout="centered")

@@ -2,16 +2,13 @@
 
 import chromadb
 from sentence_transformers import SentenceTransformer
-from PyPDF2 import PdfReader
 import uuid
 import re
 
-# Load the PDF and extract Q&A pairs
-def extract_qa_from_pdf(pdf_path):
-    reader = PdfReader(pdf_path)
-    text = ""
-    for page in reader.pages:
-        text += page.extract_text() + "\n"
+# Load the text file and extract Q&A pairs
+def extract_qa_from_text(text_path):
+    with open(text_path, 'r') as f:
+        text = f.read()
 
     # Extract Q&A pairs with regex
     qa_pairs = re.findall(r"Q: (.*?)\nA: (.*?)(?=\nQ: |\Z)", text, re.DOTALL)
@@ -27,9 +24,9 @@ if collection_name in [c.name for c in chroma_client.list_collections()]:
 else:
     collection = chroma_client.create_collection(collection_name)
 
-# Load Q&A from PDF
-pdf_path = "ACS_QA_dataset.pdf"
-qa_data = extract_qa_from_pdf(pdf_path)
+# Load Q&A from text file
+text_path = "ACS_QA_dataset.txt"
+qa_data = extract_qa_from_text(text_path)
 
 # Embedder
 embedder = SentenceTransformer("all-MiniLM-L6-v2")
